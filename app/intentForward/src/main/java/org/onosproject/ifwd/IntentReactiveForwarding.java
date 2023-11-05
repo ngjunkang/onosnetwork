@@ -143,6 +143,9 @@ public class IntentReactiveForwarding {
              * [STEP 1] Extract Ethernet header
              * more specifically, we need the source and destination IP address
              */
+            if (context.inPacket().parsed() == null) {
+                return;
+            }
             MacAddress srcMacAddress = context.inPacket().parsed().getSourceMAC();
             MacAddress dstMacAddress = context.inPacket().parsed().getDestinationMAC();
             HostId srcHostId = HostId.hostId(srcMacAddress);
@@ -175,7 +178,8 @@ public class IntentReactiveForwarding {
      *                   out
      */
     private void packetOut(PacketContext context, PortNumber portNumber) {
-
+        context.treatmentBuilder().setOutput(portNumber);
+        context.send();
     }
 
     /**
