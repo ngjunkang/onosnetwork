@@ -18,7 +18,7 @@ class TreeTopo( Topo ):
         with open('ring.in') as f:
             lines = [line.strip() for line in f]
         no_hosts, no_switches, _ = list(map(int, lines[0].split()))
-        links = [(line.split()[0], line.split()[0]) for line in lines[1:]]
+        links = [(line.split(',')[0], line.split(',')[0]) for line in lines[1:]]
 
         # Add hosts
         # > self.addHost('h%d' % [HOST NUMBER])
