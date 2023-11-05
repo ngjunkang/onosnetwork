@@ -107,8 +107,6 @@ public class LayerTwoManager implements LayerTwoService {
             // HINT: use DefaultFlowRule to match packets' src/dst address and port
             // HINT2: apply withTreatment(DefaultTrafficTreatment.builder().drop().build())
             // to drop matched packet
-            DeviceId id = d.id();
-
             TrafficSelector ts = DefaultTrafficSelector.builder()
                     .matchEthType(TYPE_IPV4)
                     .matchIPSrc(srcIpAddress.toIpPrefix())
@@ -120,7 +118,7 @@ public class LayerTwoManager implements LayerTwoService {
                     .withSelector(ts)
                     .withTreatment(DefaultTrafficTreatment.builder().drop().build())
                     .fromApp(appId)
-                    .forDevice(id)
+                    .forDevice(d.id())
                     .withPriority(PacketPriority.CONTROL.priorityValue())
                     .makePermanent()
                     .build();
@@ -234,6 +232,11 @@ public class LayerTwoManager implements LayerTwoService {
                 outPort = macTable.get(dstMacAddress).getPortNumber();
             }
 
+            if (outPort == null) {
+                flood(pc);
+                return;
+            }
+
             /**
              **
              * [STEP 4] install FlowRule
@@ -245,21 +248,16 @@ public class LayerTwoManager implements LayerTwoService {
              * .forDevice(cp.deviceId()).withPriority(PacketPriority.REACTIVE.priorityValue())
              * .fromApp(appId).build();
              */
-            if (outPort == null) {
-                flood(pc);
-            } else {
-                pc.treatmentBuilder().setOutput(outPort);
-                FlowRule fr = DefaultFlowRule.builder()
-                        .withSelector(DefaultTrafficSelector.builder().matchEthDst(dstMacAddress).build())
-                        .withTreatment(DefaultTrafficTreatment.builder().setOutput(outPort).build())
-                        .forDevice(cp.deviceId()).withPriority(PacketPriority.REACTIVE.priorityValue())
-                        .makeTemporary(60)
-                        .fromApp(appId)
-                        .build();
-                flowRuleService.applyFlowRules(fr);
-                pc.send();
-            }
-
+            pc.treatmentBuilder().setOutput(outPort);
+            FlowRule fr = DefaultFlowRule.builder()
+                    .withSelector(DefaultTrafficSelector.builder().matchEthDst(dstMacAddress).build())
+                    .withTreatment(DefaultTrafficTreatment.builder().setOutput(outPort).build())
+                    .forDevice(cp.deviceId()).withPriority(PacketPriority.REACTIVE.priorityValue())
+                    .makeTemporary(60)
+                    .fromApp(appId)
+                    .build();
+            flowRuleService.applyFlowRules(fr);
+            pc.send();
         }
 
         /**

@@ -27,19 +27,15 @@ import org.onosproject.l2fwd.LayerTwoService;
 /**
  * Command to install firewall rule on devices
  */
-@Command(scope = "onos", name = "add-firewall-on-port",
-        description = "Show Mac table on a switch")
+@Command(scope = "onos", name = "add-firewall-on-port", description = "Show Mac table on a switch")
 public class AddFirewallOnPortCommand extends AbstractShellCommand {
-    @Argument(index = 0, name = "src host", description = "The IP address of the source host",
-              required = true, multiValued = false)
+    @Argument(index = 0, name = "src host", description = "The IP address of the source host", required = true, multiValued = false)
     private String srcIp = null;
 
-    @Argument(index = 1, name = "dst host", description = "The IP address of the destination host",
-              required = true, multiValued = false)
+    @Argument(index = 1, name = "dst host", description = "The IP address of the destination host", required = true, multiValued = false)
     private String dstIp = null;
 
-    @Argument(index = 2, name = "restrained port", description = "Restrained port on destination host",
-              required = true, multiValued = false)
+    @Argument(index = 2, name = "restrained port", description = "Restrained port on destination host", required = true, multiValued = false)
     private String port = null;
 
     @Override
