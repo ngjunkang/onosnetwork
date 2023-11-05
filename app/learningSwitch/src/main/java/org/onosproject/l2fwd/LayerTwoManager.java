@@ -122,6 +122,7 @@ public class LayerTwoManager implements LayerTwoService {
                     .fromApp(appId)
                     .forDevice(id)
                     .withPriority(PacketPriority.CONTROL.priorityValue())
+                    .makeTemporary(60)
                     .build();
             flowRuleService.applyFlowRules(fr);
         }
