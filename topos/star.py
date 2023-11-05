@@ -17,7 +17,7 @@ class TreeTopo( Topo ):
         lines = []
         with open('star.in') as f:
             lines = [line.strip() for line in f]
-        no_hosts, no_switches = list(map(int, lines[0].split()))
+        no_hosts, no_switches, _ = list(map(int, lines[0].split()))
         links = [(line.split()[0], line.split()[0]) for line in lines[1:]]
 
         # Add hosts
