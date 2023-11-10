@@ -129,6 +129,9 @@ public class LayerTwoManager implements LayerTwoService {
 
     /**
      * Packet processor responsible for forwarding packets along their paths.
+     * 
+     * Reference:
+     * https://github.com/opennetworkinglab/onos/blob/master/apps/learning-switch/src/main/java/org/onosproject/learningswitch/LearningSwitchSolution.java
      */
     private class LayerTwoPacketProcessor implements PacketProcessor {
 

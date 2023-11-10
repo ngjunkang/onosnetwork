@@ -119,6 +119,9 @@ public class IntentReactiveForwarding {
 
     /**
      * Packet processor responsible for forwarding packets along their paths.
+     * 
+     * Reference:
+     * https://github.com/opennetworkinglab/onos-app-samples/blob/master/ifwd/src/main/java/org/onosproject/ifwd/IntentReactiveForwarding.java
      */
     private class ReactivePacketProcessor implements PacketProcessor {
         /**
